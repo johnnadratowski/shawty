@@ -13,7 +13,9 @@ A URL shortener based on Node.JS with a pluggable backend architecture
 [argparse](https://github.com/nodeca/argparse)
 
 I included all of the requirements in the node modules folder, but these could be 
-removed at a later date to ensure the most up-to-date sources.
+removed at a later date to ensure the most up-to-date sources. At the time of writing
+this (11/9/12) the implementation was based on the latest versions of Node (0.8.14)
+and all of the requirements.
 
 ## Usage
 
