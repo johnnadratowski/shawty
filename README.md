@@ -6,6 +6,15 @@ A URL shortener based on Node.JS with a pluggable backend architecture
 
 [Node.js](http://nodejs.org)
 
+[Node MongoDB](https://github.com/christkv/node-mongodb-native)
+
+[Winston](https://github.com/indexzero/winston-mongodb)
+
+[argparse](https://github.com/nodeca/argparse)
+
+I included all of the requirements in the node modules folder, but these could be 
+removed at a later date to ensure the most up-to-date sources.
+
 ## Usage
 
 Start the server:
