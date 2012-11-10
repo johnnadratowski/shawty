@@ -1,0 +1,136 @@
+<html>
+  <head>
+    <title>Shawty</title>
+
+    <style type="text/css">
+
+      body{
+        width: 100%;
+      }
+
+      #main-content-div{
+        width: 70%;
+        margin: 0 15% 0 15%;
+      }
+
+      #header-div{
+        width: 50%;
+        margin: 0 25% 0 25%;
+      }
+
+      #shorten-url-div{
+        width: 50%;
+        margin: 0 25% 0 25%;
+      }
+
+      #output-div{
+        width: 50%;
+        margin: 0 25% 0 25%;
+      }
+
+      #error-text{
+        color: red;
+      }
+
+      #url-shorten-submit{
+        width: 20%;
+        height: 50px;
+        margin: 0 35% 0 35%;
+      }
+
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+
+        var hostname = "http://" + window.location.hostname
+        if (window.location.port != "80")
+          hostname += ":" + window.location.port
+        hostname += "/"
+
+        var textbox = $('#url-text-input') 
+        textbox.focus(function(e){
+          if (textbox.attr('value') == "Input URL Here"){
+            textbox.attr('value', '');
+          }
+        });
+
+        var errText = $('#error-text')
+        var outText = $('#output-text')
+        var shortenform = $('#url-shorten-form')
+        shortenform.submit(function(e){
+
+            e.preventDefault();
+
+            var url = textbox.attr('value')
+
+            if (!url) {
+              errText.html("You must specify a URL to shorten");
+              outText.html("")
+              outText.attr("href", "");
+              return false;
+            }
+
+            if (url.search(/^http/) == -1) {                                                        
+              url = 'http://' + url;                                                              
+            }           
+
+            $.get(hostname, {'shorten':'["'+url+'"]'},
+                function(data){
+                  var short_url = data[url];
+                  outText.html("Shortened URL: " + short_url)
+                  outText.attr("href", short_url);
+                  errText.html("");
+                },
+                "json"
+            );
+
+            return false;
+        });
+
+      });
+
+    </script>
+
+  </head>
+  <body>
+
+    <div id="main-content-div">
+      <div id="header-div">
+        <pre>
+          $$$$$$\  $$\                                 $$\               
+         $$  __$$\ $$ |                                $$ |              
+         $$ /  \__|$$$$$$$\   $$$$$$\  $$\  $$\  $$\ $$$$$$\   $$\   $$\ 
+         \$$$$$$\  $$  __$$\  \____$$\ $$ | $$ | $$ |\_$$  _|  $$ |  $$ |
+          \____$$\ $$ |  $$ | $$$$$$$ |$$ | $$ | $$ |  $$ |    $$ |  $$ |
+         $$\   $$ |$$ |  $$ |$$  __$$ |$$ | $$ | $$ |  $$ |$$\ $$ |  $$ |
+         \$$$$$$  |$$ |  $$ |\$$$$$$$ |\$$$$$\$$$$  |  \$$$$  |\$$$$$$$ |
+          \______/ \__|  \__| \_______| \_____\____/    \____/  \____$$ |
+                                                               $$\   $$ |
+                                                               \$$$$$$  |
+                                                                \______/ 
+      </pre>
+      </div>
+
+      <div id="shorten-url-div">
+
+        <form id="url-shorten-form" action="/" method="GET">
+          <input id="url-text-input" type="TEXT" size="100" value="Input URL Here">
+          <input id="url-shorten-submit" type="SUBMIT" name="submit" value="Shawten"/>
+        </form>
+
+      </div>
+
+      <div id="output-div">
+        <p id="error-text"></p>
+        <p><a id="output-text" href=""></a></p>
+      </div>
+
+    </div>
+
+  </body>
+</html>
+
