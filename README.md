@@ -21,7 +21,10 @@ Start the server:
 
     $ node shawty.js
 
-Shorten a URL by sending a request to http://localhost:8080?shorten=['http://example.com', 'http://foo.com']
+The server will start by default on 127.0.0.1:80.
+
+Shorten a URL by sending a request to http://127.0.0.1?shorten=(urls-to-shorten)
+where urls-to-shorten is a JSON list containing the urls that you wan to shorten
 
 The server will respond with a JSON response containing a JSON dictionary with the keys being 
 the long urls and the values being the short URLS.
