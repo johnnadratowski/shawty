@@ -47,7 +47,8 @@ parser.addArgument([ '-n', '--db-name' ],
          type: 'string'});
 
 parser.addArgument([ '-o', '--plugin-options' ], 
-        {help: 'Extra options for the plugin you are using. Should be in proper JSON strng format.',
+        {help: 'Extra options for the plugin you are using. '+
+               'Should be in proper JSON strng format.',
          defaultValue: '{"server": {"auto_reconnect":true},' +
                        ' "general": {"collection_name":"mongo-shawty-collection"},' +
                        ' "db": {"safe":true}}',
@@ -63,10 +64,11 @@ parser.addArgument([ '-T', '--template-path' ],
          defaultValue: "./templates/",
          type: 'string'});
 
-parser.addArgument([ '-i', '--show-index' ], 
-        {action: 'storeTrue',
-         help: 'Specify this to show the index page on request /.',
-         defaultValue: false,
+parser.addArgument([ '-i', '--index-page' ], 
+        {help: 'The page to return for the index page. '+
+               'Should be in path specified by --template-path. '+
+               'If not specified, returns 404.',
+         defaultValue: undefined,
          type: 'string'});
 
 parser.addArgument([ '-R', '--permanent-redirect' ], 

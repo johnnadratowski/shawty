@@ -32,7 +32,7 @@ var send_html = exports.send_html = function(server, res, file){
         if (err) {
             var msg = 'Error opening template in path ' + file + '. Exception: ' + err.toString();
             server.logger.crit(msg);
-            throw new shawty_utils.ShawtyError("TemplateNotFoundError", "404", msg);
+            throw new ShawtyError("TemplateNotFoundError", "404", msg);
         }       
         send_200(res, {'Content-Type': 'text/html'}, body);
     });

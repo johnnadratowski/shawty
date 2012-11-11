@@ -179,7 +179,7 @@ ServerBase.prototype.handle_regular_request = function(server, req, res, parsed,
                             "Returning default response (usually index page)")
 
         // this request is for /
-        if (server.args.show_index)
+        if (server.args.index_page)
             server.handle_index_request(server, req, res, parsed);
         else
             server.handle_unknown_request(server, req, res, parsed, short_id);
@@ -189,8 +189,8 @@ ServerBase.prototype.handle_regular_request = function(server, req, res, parsed,
 ServerBase.prototype.handle_index_request = function(server, req, res, parsed){
     // Handles requests to the index page
 
-    index_page = path.resolve(server.args.template_path);
-    index_page += '/index.html'
+    var index_page = path.resolve(server.args.template_path) + "/";
+    index_page += server.args.index_page;
 
     server.logger.debug("Attempting to open index page at path: " + index_page)
 
