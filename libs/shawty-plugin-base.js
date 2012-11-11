@@ -46,7 +46,7 @@ ServerBase.prototype.handle_request = function(server, req, res){
             // ?shorten= in query - get shortened URL
             server.logger.debug("URL in query - getting shorted URL.")
 
-            var shorten = shawty_utils.get_shorten(parsed)
+            var shorten = shawty_utils.get_shorten(req, parsed)
 
             server.logger.debug("URLs to shorten: " + shorten.toString())
 
@@ -137,11 +137,18 @@ ServerBase.prototype.get_short_id = function(server, id, long_url){
     return shawty_utils.base_encode(id);
 }
 
-ServerBase.prototype.build_short_url = function(server, short_id){
+ServerBase.prototype.build_short_url = function(server, req, short_id){
     // Method that takes a short id and builds the full short url from it
-    var short_url =  'http://' + server.host 
-    if (server.port != 80)
-        short_url += ":" + server.port
+
+    if (req.headers.host) {
+        var short_url =  'http://' + req.headers.host;
+    }
+    else {
+        var short_url =  'http://' + server.host;
+        if (server.port != 80)
+            short_url += ":" + server.port
+    }
+
     short_url += '/' + short_id
     return short_url
 }

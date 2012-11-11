@@ -48,7 +48,7 @@ ShawtyServer.prototype.handle_shorten_request = function(server, req, res, parse
                                 " found. NOT creating short ID for URL: " + long_url);
         }
 
-        response_json[long_url] = server.build_short_url(server, short_id);
+        response_json[long_url] = server.build_short_url(server, req, short_id);
     }
 
     server.send_shorten_response(server, req, res, parsed, response_json);

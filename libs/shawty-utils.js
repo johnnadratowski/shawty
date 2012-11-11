@@ -78,16 +78,23 @@ var has_invalid_chars = exports.has_invalid_chars = function(str, valid_chars){
 }
 
 // Gets the url from the parsed url string
-var get_shorten = exports.get_shorten = function(parsed){
+var get_shorten = exports.get_shorten = function(req, parsed){
     var shorten_urls = parsed.query.shorten;
 
     try
     {
-        var json_urls = JSON.parse(shorten_urls);
+        try
+        {
+            var json_urls = JSON.parse(shorten_urls);
+        }
+        catch(e)
+        {
+            var json_urls = [shorten_urls]
+        }
 
         for (i=0; i<json_urls.length; i++)
         {
-            url = json_urls[i]
+            var url = json_urls[i]
             // If the URL doesn't start with http, add it.
             if (url.search(/^http/) == -1) {
                 url = 'http://' + url;

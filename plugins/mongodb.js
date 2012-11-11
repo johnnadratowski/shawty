@@ -304,7 +304,7 @@ ShawtyServer.prototype.send_shorten_response = function(server, req, res, parsed
     server.logger.debug("Adding long url " + long_url + 
                         " with short id " + short_id + " to response");
 
-    response_json[long_url] = server.build_short_url(server, short_id); 
+    response_json[long_url] = server.build_short_url(server, req, short_id); 
 
     for (var idx in shorten) {
         url = shorten[idx];
