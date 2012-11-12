@@ -78,7 +78,9 @@ parser.addArgument([ '-R', '--permanent-redirect' ],
          type: 'string'});
 
 parser.addArgument([ '-d', '--trusted-domains' ], 
-        {help: 'A comma-delimited strign containing all trusted domains that can make AJAX calls.',
+        {help: 'A comma-delimited string containing all trusted domains '+
+               'that can make AJAX calls to the Shawty Server. Sets the '+
+               '"Access-Control-Allow" headers.',
          defaultValue: '',
          type: 'string'});
 
