@@ -21,7 +21,15 @@ var url_query = exports.url_query = function(parsed) {
 }
 
 // Sends a 200 ok response giving the host and shorted location
-var send_200 = exports.send_200 = function(res, header, body){
+var send_200 = exports.send_200 = function(server, res, header, body){
+
+    if (server.args.trusted_domains){
+        header['Access-Control-Allow-Origin'] = server.args.trusted_domains;
+        header['Access-Control-Allow-Methods'] = 'POST,GET,DELETE,OPTIONS,PUT';
+        header['Access-Control-Allow-Headers'] = 'Content-Type,*';
+        header['Access-Control-Allow-Credentials'] = 'true';
+    }
+
     res.writeHeader(200, header);
     res.write(body);
     res.end();
@@ -34,7 +42,7 @@ var send_html = exports.send_html = function(server, res, file){
             server.logger.crit(msg);
             throw new ShawtyError("TemplateNotFoundError", "404", msg);
         }       
-        send_200(res, {'Content-Type': 'text/html'}, body);
+        send_200(server, res, {'Content-Type': 'text/html'}, body);
     });
 }
 

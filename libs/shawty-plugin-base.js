@@ -12,6 +12,9 @@ var ServerBase = exports.ServerBase = function(args){
     this.logger = args.logger;
     this.host = this.args.host;
     this.port = this.args.port;
+    this.db_host = this.args.db_host;
+    this.db_port = this.args.db_port;
+    this.db_name = this.args.db_name;
     Server.call(this,function(req, res){
         server.handle_request(this, req, res)
     });

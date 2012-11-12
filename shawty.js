@@ -77,6 +77,11 @@ parser.addArgument([ '-R', '--permanent-redirect' ],
          defaultValue: false,
          type: 'string'});
 
+parser.addArgument([ '-d', '--trusted-domains' ], 
+        {help: 'A comma-delimited strign containing all trusted domains that can make AJAX calls.',
+         defaultValue: '',
+         type: 'string'});
+
 var args = parser.parseArgs();
 
 args.plugin_options = JSON.parse(args.plugin_options);

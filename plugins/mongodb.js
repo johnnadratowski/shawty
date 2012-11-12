@@ -263,10 +263,10 @@ ShawtyServer.prototype.handle_shorten_request = function(server, req, res, parse
                             util.format(
                                 'Successfully inserted document with long url %s ' +
                                 'and short id %s into collection "%s" ' + 
-                                'in Mongo DB %s @ %s:%s. %s', 
+                                'in Mongo DB %s @ %s:%s.', 
                                 long_url, short_id, 
-                                server.collection_name, server.db_name, 
-                                server.db_host, server.db_port, err)
+                                server.collection_name, server.args.db_name, 
+                                server.args.db_host, server.args.db_port)
                             );
 
                         server.logger.debug("Short ID " + short_id + " created for URL: " + long_url);
