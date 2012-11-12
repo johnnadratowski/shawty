@@ -46,6 +46,14 @@ server prototype has been provided in ./libs/shawty-plugin-base.js.  You can imp
 ServerBase prototype to implement your backend.  The plugins provided should be a fairly 
 straightforward documentation of how to do so.
 
+## Static Templates
+
+Right now, the system supports serving other static templates by default using the /t/ 
+url path and the file path to serve, served from the template-path directory argument.
+I may swap out this simplistic way of serving other static files in the future in favor
+of a better template hosting Node framework.  When using the -i index page argument,
+this should be contained in the template-path as well.
+
 ## Extra Notes
 
 I know this documentation is fairly sparse at this point, hopefully I can come back and

@@ -230,9 +230,8 @@ ShawtyServer.prototype.handle_shorten_request = function(server, req, res, parse
                             server.args.db_host, server.args.db_port, err
                         );
                         server.logger.crit(msg);
-                        throw new shawty_utils.ShawtyError("GetShawtyCounterError", 
-                                                            "500", 
-                                                            msg);
+                        shawty_utils.send_500(res, msg);
+                        return;
                     }
 
                     counter = doc['counter'];
@@ -255,10 +254,9 @@ ShawtyServer.prototype.handle_shorten_request = function(server, req, res, parse
                                 server.collection_name, server.db_name, 
                                 server.db_host, server.db_port, err)
                             server.logger.crit(msg);
-                            throw new shawty_utils.ShawtyError("InsertNewShortURLDocError", 
-                                                                "500", 
-                                                                msg);
-                        }
+                            shawty_utils.send_500(res, msg);
+                            return;
+                       }
                         server.logger.debug(
                             util.format(
                                 'Successfully inserted document with long url %s ' +

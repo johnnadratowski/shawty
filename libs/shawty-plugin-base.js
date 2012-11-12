@@ -61,20 +61,11 @@ ServerBase.prototype.handle_request = function(server, req, res){
             // redirect to the long URL) or we respond without redirect
             server.logger.debug("No URL in query - Redirecting if short or handling other request.")
 
-            // Remove the leading slash from the pathname.
-            var short_id = parsed.pathname.replace(/^\//, '');
+            server.emit('before_regular_request', server, req, res, parsed);
 
-            if (short_id && shawty_utils.has_invalid_chars(short_id, shawty_utils.KEYSTR)){
-                server.logger.debug("Short ID contains invalid characters. Returning 404.");
-                shawty_utils.send_404(res, "Invalid Short URL Format");
-                return;
-            }
+            server.handle_regular_request(server, req, res, parsed);
 
-            server.emit('before_regular_request', server, req, res, parsed, short_id);
-
-            server.handle_regular_request(server, req, res, parsed, short_id);
-
-            server.emit('after_regular_request', server, req, res, parsed, short_id);
+            server.emit('after_regular_request', server, req, res, parsed);
         }
     }
     catch(e)
@@ -167,9 +158,37 @@ ServerBase.prototype.send_shorten_response = function(server, req, res, parsed, 
     server.emit('after_shorten_response', server, req, res, parsed, response_json);
 }
 
-ServerBase.prototype.handle_regular_request = function(server, req, res, parsed, short_id){
+ServerBase.prototype.handle_regular_request = function(server, req, res, parsed){
     // Handles all queries WITHOUT ?shorten= in the get parameters
-    if (short_id) { 
+
+    // Remove the leading slash from the pathname.
+    var short_id = parsed.pathname.replace(/^\//, '');
+
+    if (parsed.pathname.substring(0,3) == '/t/') {
+        // We're serving up a static file from the template_path
+
+        server.logger.debug("Serving up a static file from the template directory");
+
+        var template = path.resolve(server.args.template_path) + "/";
+        template += parsed.pathname.slice(3);
+
+        server.logger.debug("Attempting to open index page at path: " + template)
+
+        server.emit('before_template_response', server, req, res, parsed);
+
+        shawty_utils.send_html(server, res, template);
+
+        server.emit('after_template_response', server, req, res, parsed);
+
+        server.logger.debug("Template page returned to client. Template: " + template);
+    }
+    else if (short_id) { 
+
+        if (short_id && shawty_utils.has_invalid_chars(short_id, shawty_utils.KEYSTR)){
+            server.logger.debug("Short ID contains invalid characters. Returning 404.");
+            shawty_utils.send_404(res, "Invalid Short URL Format");
+            return;
+        }
 
         server.logger.debug("Parsed Short ID: " + short_id)
 
