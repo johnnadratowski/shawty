@@ -215,65 +215,8 @@ ShawtyServer.prototype.handle_shorten_request = function(server, req, res, parse
                 // This is a new URL. Build a short URL for it and add it to the response
                 server.logger.debug("Short ID not found. " + 
                                     "Creating new short ID for URL: " + long_url);
-
-                // Get the counter key and increment it. This is base 64 encoded to the short URL.
-                server.collection.findAndModify({_id:COUNTER_KEY}, 
-                                                [], 
-                                                {$inc:{counter:1}}, 
-                                                function(err, doc){
-                    if (err) {
-                        // if there is an error, log it and send a 500 error, then return
-                        var msg = util.format(
-                            'Error getting URL COUNTER from key %s in collection ' +
-                            '"%s" in Mongo DB %s @ %s:%s. %s', 
-                            COUNTER_KEY, server.collection_name, server.args.db_name, 
-                            server.args.db_host, server.args.db_port, err
-                        );
-                        server.logger.crit(msg);
-                        shawty_utils.send_500(res, msg);
-                        return;
-                    }
-
-                    counter = doc['counter'];
-                    // Create new short id for this URL
-                    short_id = server.get_short_id(server, counter, long_url);
-
-                    new_doc = {};
-                    new_doc[URL_KEY] = long_url;
-                    new_doc[SHORT_ID_KEY] = short_id;
-
-                    // Insert the new short url doc into Mongo
-                    server.collection.insert(new_doc, {safe:true}, function(err, result){
-                        if (err) {
-                            // If there is an error inserting the doc, log and return 500
-                            var msg = util.format(
-                                'Error inserting document with long url %s ' +
-                                'and short id %s into collection "%s" ' + 
-                                'in Mongo DB %s @ %s:%s. %s', 
-                                long_url, short_id, 
-                                server.collection_name, server.db_name, 
-                                server.db_host, server.db_port, err)
-                            server.logger.crit(msg);
-                            shawty_utils.send_500(res, msg);
-                            return;
-                       }
-                        server.logger.debug(
-                            util.format(
-                                'Successfully inserted document with long url %s ' +
-                                'and short id %s into collection "%s" ' + 
-                                'in Mongo DB %s @ %s:%s.', 
-                                long_url, short_id, 
-                                server.collection_name, server.args.db_name, 
-                                server.args.db_host, server.args.db_port)
-                            );
-
-                        server.logger.debug("Short ID " + short_id + " created for URL: " + long_url);
-
-                        server.send_shorten_response(server, req, res, parsed, 
-                                                     response_json, long_url, short_id, shorten);
-                    });
-
-                });
+                
+                server.create_short_url(server, req, res, parsed, shorten, long_url, response_json);
             } 
             else {
                 server.logger.debug("Short ID " + short_id + 
@@ -282,6 +225,70 @@ ShawtyServer.prototype.handle_shorten_request = function(server, req, res, parse
                                              response_json, long_url, short_id, shorten);
             }
         }
+    });
+}
+
+ShawtyServer.prototype.create_short_url = function(server, req, res, parsed, 
+                                                   shorten, long_url, response_json){
+    // Creates the short URL from the long URL
+    
+    // Get the counter key and increment it. This is base 64 encoded to the short URL.
+    server.collection.findAndModify({_id:COUNTER_KEY}, 
+                                    [], 
+                                    {$inc:{counter:1}}, 
+                                    function(err, doc){
+        if (err) {
+            // if there is an error, log it and send a 500 error, then return
+            var msg = util.format(
+                'Error getting URL COUNTER from key %s in collection ' +
+                '"%s" in Mongo DB %s @ %s:%s. %s', 
+                COUNTER_KEY, server.collection_name, server.args.db_name, 
+                server.args.db_host, server.args.db_port, err
+            );
+            server.logger.crit(msg);
+            shawty_utils.send_500(res, msg);
+            return;
+        }
+
+        counter = doc['counter'];
+        // Create new short id for this URL
+        short_id = server.get_short_id(server, counter, long_url);
+
+        new_doc = {};
+        new_doc[URL_KEY] = long_url;
+        new_doc[SHORT_ID_KEY] = short_id;
+
+        // Insert the new short url doc into Mongo
+        server.collection.insert(new_doc, {safe:true}, function(err, result){
+            if (err) {
+                // If there is an error inserting the doc, log and return 500
+                var msg = util.format(
+                    'Error inserting document with long url %s ' +
+                    'and short id %s into collection "%s" ' + 
+                    'in Mongo DB %s @ %s:%s. %s', 
+                    long_url, short_id, 
+                    server.collection_name, server.db_name, 
+                    server.db_host, server.db_port, err)
+                server.logger.crit(msg);
+                shawty_utils.send_500(res, msg);
+                return;
+            }
+            server.logger.debug(
+                util.format(
+                    'Successfully inserted document with long url %s ' +
+                    'and short id %s into collection "%s" ' + 
+                    'in Mongo DB %s @ %s:%s.', 
+                    long_url, short_id, 
+                    server.collection_name, server.args.db_name, 
+                    server.args.db_host, server.args.db_port)
+                );
+
+            server.logger.debug("Short ID " + short_id + " created for URL: " + long_url);
+
+            server.send_shorten_response(server, req, res, parsed, 
+                                            response_json, long_url, short_id, shorten);
+        });
+
     });
 }
 

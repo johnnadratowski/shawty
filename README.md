@@ -54,6 +54,13 @@ I may swap out this simplistic way of serving other static files in the future i
 of a better template hosting Node framework.  When using the -i index page argument,
 this should be contained in the template-path as well.
 
+## Quirks/Behaviors
+
+If a URL is sent to Shawty without an http prefix, it will prepend http:// to the url. When
+the JSON is returned with the long URLs as keys, it will contain the prepended prefix. It is
+recommended to ensure your URLs are properly formatted to avoid this behavior, as it might
+cause some issues when attempting to retrieve the short url from the JSON response.
+
 ## Extra Notes
 
 I know this documentation is fairly sparse at this point, hopefully I can come back and
