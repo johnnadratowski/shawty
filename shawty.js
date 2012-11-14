@@ -18,7 +18,7 @@ parser.addArgument([ '-l', '--log-level' ],
 
 parser.addArgument([ '-f', '--logfilepath' ], 
         {help: 'The log file path to use.',
-         defaultValue: '/var/log/shwaty/',
+         defaultValue: '/var/log/shawty/',
          type: 'string'});
 
 parser.addArgument([ '-s', '--host' ], 
