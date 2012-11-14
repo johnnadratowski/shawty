@@ -90,7 +90,7 @@ args.plugin_options = JSON.parse(args.plugin_options);
 
 function setup_logger(args){
     transports = [new (winston.transports.Console)({ level: args.log_level })]
-    if (args.logfile)
+    if (args.logfilepath)
     {
         if (!fs.exists(args.logfilepath))
         {
