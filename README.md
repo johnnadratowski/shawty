@@ -32,6 +32,11 @@ or just a single string of a url to shorten.
 The server will respond with a JSON response containing a JSON dictionary with the keys being 
 the long urls and the values being the short URLS.
 
+## Configuration
+
+There is an included upstart configuration file. This should be slightly customized to the
+settings you need.
+
 ## Plugins
 
 Shawty supports a pluggable architecture to use for the DB backend.  Out of the box it comes 
