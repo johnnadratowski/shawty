@@ -61,7 +61,7 @@ parser.addArgument([ '-P', '--plugin-file' ],
 
 parser.addArgument([ '-T', '--template-path' ], 
         {help: 'The path to use to find templates',
-         defaultValue: "./templates/",
+         defaultValue: "/var/www/shawty-default/",
          type: 'string'});
 
 parser.addArgument([ '-i', '--index-page' ], 
