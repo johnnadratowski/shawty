@@ -2,6 +2,11 @@
 
 A URL shortener based on Node.JS with a pluggable backend architecture
 
+## Installation
+
+You can install shawty by doing an "npm install shawty" or by cloning the
+git repository at git@github.com:Unified/shawty.git.
+
 ## Requirements
 
 [Node.js](http://nodejs.org)
