@@ -1,0 +1,38 @@
+{
+   "name": "shawty",
+   "preferGlobal": "false",
+   "version": "0.0.1",
+   "description": "A pluggable URL shortener server.",
+   "main": "./shawty.js",
+   "keywords": [
+       "urlshortener",
+       "http",
+       "mongo",
+       "pluggable",
+       "daemon"
+   ],
+   "bin": {
+       "shawty": "./shawty.js"
+   }
+   "author": {
+       "name": "John Nadratowski",
+       "email": "john@unifiedsocial.com",
+       "web": "http://www.unifiedsocial.com"
+   }, 
+   "license": {
+       "type": "MIT"
+   }, 
+   "repository": {
+       "type": "git",
+       "url": "git@github.com:Unified/shawty.git" 
+   }, 
+   "dependencies": {
+       "winston": ">=0.6.*",
+       "argparse": ">=0.1.*",
+       "mongodb": ">=1.2.*"
+   }
+   "engines": {
+       "node": ">=0.8.14"
+   },
+}
+
