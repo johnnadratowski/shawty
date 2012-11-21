@@ -60,14 +60,14 @@ parser.addArgument([ '-P', '--plugin-file' ],
          type: 'string'});
 
 parser.addArgument([ '-T', '--template-path' ], 
-        {help: 'The path to use to find templates',
-         defaultValue: "/var/www/shawty-default/",
+        {help: 'The path to use to find templates. If not specified no templates will be served.',
+         defaultValue: "",
          type: 'string'});
 
 parser.addArgument([ '-i', '--index-page' ], 
         {help: 'The page to return for the index page. '+
                'Should be in path specified by --template-path. '+
-               'If not specified, returns 404.',
+               'If not specified, or --template-path not specified, returns 404.',
          defaultValue: undefined,
          type: 'string'});
 

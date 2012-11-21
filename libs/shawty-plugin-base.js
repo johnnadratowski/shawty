@@ -164,7 +164,7 @@ ServerBase.prototype.handle_regular_request = function(server, req, res, parsed)
     // Remove the leading slash from the pathname.
     var short_id = parsed.pathname.replace(/^\//, '');
 
-    if (parsed.pathname.substring(0,3) == '/t/') {
+    if (server.args.template_path && parsed.pathname.substring(0,3) == '/t/') {
         // We're serving up a static file from the template_path
 
         server.logger.debug("Serving up a static file from the template directory");
@@ -201,7 +201,7 @@ ServerBase.prototype.handle_regular_request = function(server, req, res, parsed)
                             "Returning default response (usually index page)")
 
         // this request is for /
-        if (server.args.index_page)
+        if (server.args.template_path && server.args.index_page)
             server.handle_index_request(server, req, res, parsed);
         else
             server.handle_unknown_request(server, req, res, parsed, short_id);
