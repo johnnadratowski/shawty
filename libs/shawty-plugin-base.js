@@ -70,8 +70,6 @@ ServerBase.prototype.handle_request = function(server, req, res){
     }
     catch(e)
     {
-        debugger;
-        
         if (e.action == 'kill') {
             server.logger.crit(
                     'Error occurred handling request. SERVER GOING DOWN. Error: ' + e.msg

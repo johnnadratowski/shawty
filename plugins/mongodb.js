@@ -250,11 +250,20 @@ ShawtyServer.prototype.create_short_url = function(server, req, res, parsed,
             return;
         }
 
-        counter = doc['counter'];
-        // Create new short id for this URL
-        short_id = server.get_short_id(server, counter, long_url);
+        var counter = doc['counter'];
 
-        new_doc = {};
+        server.logger.debug(util.format(
+                'New counter retreived from MongoDB - %s for long_url %s.', counter, long_url)
+        );
+
+        // Create new short id for this URL
+        var short_id = server.get_short_id(server, counter, long_url);
+
+        server.logger.debug(util.format(
+                'New short id %s created for long_url %s.', short_id, long_url) 
+        );
+
+        var new_doc = {};
         new_doc[URL_KEY] = long_url;
         new_doc[SHORT_ID_KEY] = short_id;
 
@@ -348,7 +357,7 @@ ShawtyServer.prototype.handle_shortened_redirect = function(server, req, res, pa
         if (doc) { 
             // A corresponding long URL exists.
 
-            long_url = doc[URL_KEY];
+            var long_url = doc[URL_KEY];
             server.logger.debug(
                 util.format(
                     'Short ID %s FOUND in collection %s. Redirecting to %s.', 
@@ -408,13 +417,13 @@ ShawtyServer.prototype.log_short_request_info = function(server, req, res, parse
             ip = req.connection.remoteAddress;
         }
 
-        doc = {'user-agent': req.headers['user-agent'],
-               'language': req.headers['accept-language'],
-               'requested_url': req.url,
-               'redirected_url': long_url,
-               'referer': req.headers['referer'],
-               'ip': ip,
-               'date': Date().toString()};
+        var doc = {'user-agent': req.headers['user-agent'],
+                   'language': req.headers['accept-language'],
+                   'requested_url': req.url,
+                   'redirected_url': long_url,
+                   'referer': req.headers['referer'],
+                   'ip': ip,
+                   'date': Date().toString()};
 
         collection.insert(doc, function(err, item){
             if (err) {
